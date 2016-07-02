@@ -8,7 +8,7 @@ def main():
     app = QApplication(sys.argv)
     win = central()
     win.setWindowTitle("Syncer")
-    win.resize(1300, 650)
+    win.resize(1200, 650)
     win.move(30, 30)
 
     win.setStyleSheet("QMainWindow::separator { width : 1px;}")
@@ -21,4 +21,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
 

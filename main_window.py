@@ -36,6 +36,8 @@ from copy_confirm import *
 from fetching import *
 from fetch import *
 
+from wrapper import *
+
 """
 Signals for progress function update
 """
@@ -58,7 +60,6 @@ class centre(QWidget):
         log_file.writelines(line)
         line = "[" + str(time.asctime()) + "]    program started    setting up window\n"
         log_file.writelines(line)
-        
         try:
             """
             Start handling dock2 treewidget signal
@@ -132,6 +133,7 @@ class centre(QWidget):
                 top_check.append(item)		#Variable at Line 78 in env
             self.make_synclist()
         except:
+            print(sys.exc_info())
             pass
         """        
         TEXT1[0] = "Press A Button To Start Any Job"
@@ -151,7 +153,9 @@ class centre(QWidget):
                 j = j + 1
             i = i + 1
             
-        sync_list.clear()
+        #sync_list.clear()
+        #sync_list = []
+        clear_list([sync_list]);
         for item in tmp_list:
             sync_list.append(item)
         self.make_rev_list()	#Make List For Reverse Copy
@@ -204,7 +208,7 @@ class centre(QWidget):
         log = QPushButton("LOG")
         self.make_button(log, "", "", self.log)
         log.setMinimumHeight(50)
-
+        
         #Set StyleSheet
         but_obj = [dictionary, self.fetch1, self.copy1, self.copy2, self.del1, self.del2, self.sync1, log]
         set_style(but_obj, "button")
@@ -255,31 +259,42 @@ class centre(QWidget):
         if(action == "copy"):
             tree = self.tree2
             file_cat = cp_filetype	#Variable at Line 27 in env2
-            left_cp_obj.clear()
+            #left_cp_obj.clear()
+            #left_cp_obj = []
+            clear_list([left_cp_obj]);
             obj_list = left_cp_obj	#Variable at Line 87 in env
-            cp_map.clear()
+            #cp_map.clear()
+            #cp_map = []
+            clear_list([cp_map]);
             maps = cp_map		#Variable at Line 92 in env
             
         if(action == "del"):
             tree = self.del_tree
             file_cat = del_filetype	#Variable at Line 30 in env2
-            left_del_obj.clear()
+            #left_del_obj.clear()
+            #left_del_obj = []
+            clear_list([left_del_obj]);
             obj_list = left_del_obj	#Variable at Line 88 in env2
-            del_map.clear()
+            #del_map.clear()
+            #del_map= []
+            clear_list([del_map]);
             maps = del_map		#Variable at Line 93 in env2
 
-                
+        
         if(action == "copy"):
             for i in range(len(cp_filetype)):
-                cp_filetype[i].clear()
+                #cp_filetype[i].clear()
+                #cp_filetype[i] = []
+                clear_list([cp_filetype[i]]);
             make_fcategory(self, cp_file_from, "copy")		#Function at Line 22 in make_dock2
             
         if(action == "del"):
             for i in range(len(del_filetype)):
-                del_filetype[i].clear()
+                #del_filetype[i].clear()
+                #del_filetype[i] = []
+                clear_list([del_filetype[i]]);
             make_fcategory(self, del_file_from, "del")		#Function at Line 22 in make_dock2
         
-
         tree.clear()
         i = 0
         for item in file_cat:
@@ -294,7 +309,7 @@ class centre(QWidget):
             if(len(item) == 0):
                 head.setDisabled(True)
                 head.setCheckState(0, Qt.Unchecked)
-                
+            
             for fname in file_cat[i]:
                 size = fname[1]
                 unit = ""
@@ -320,15 +335,13 @@ class centre(QWidget):
             maps.append(out_map)
             i = i + 1
         self.start_handle1= 2	#Start Processing changes made to treewidget
-        
-
 
             
     def make_dock1(self):
         frame = QFrame()
         frame.setFrameShape(QFrame.StyledPanel)
         grid = QGridLayout()
-
+        
         show_disk(centre)
         i = 0
         j = 0
@@ -425,9 +438,9 @@ class centre(QWidget):
 
         tab1.setLayout(cp_grid)
         tab2.setLayout(del_grid)
-
+        
         self.dock2.setWidget(tab)        
-
+        
         self.update_sec_dock("copy")
         self.update_sec_dock("del")
     
@@ -592,8 +605,9 @@ class centre(QWidget):
     def target_empty(self, fetch_list):
         if(len(fetch_list) == 0):
             self.clear_list()
-            self.update_right_dock(self, cp_file_from, "copy")
-            self.update_right_dock(self, del_file_from, "del")
+            inst = central()
+            self.update_right_dock(inst, cp_file_from, "copy")
+            self.update_right_dock(inst, del_file_from, "del")
             self.update_sec_dock("copy")
             self.update_sec_dock("del")
             
@@ -617,7 +631,9 @@ class centre(QWidget):
     def clear_list(self):
         list_size = len(lists)
         for i in range(list_size):
-            lists[i].clear()
+            #lists[i].clear()
+            #lists[i] = []
+            clear_list([lists[i]]);
 
     def fetch_btn(self):
         self.call_fetch_btn(1)
@@ -930,7 +946,9 @@ class centre(QWidget):
     Make reverse sync list for copy21 and del2
     """
     def make_rev_list(self):
-        rev_list.clear()
+        #rev_list.clear()
+        #rev_list = []
+        clear_list([rev_list]);
         for item in sync_list:
 	    #Swap dictionary values
             tmp = {'source': "", 'target' : ""}
@@ -964,7 +982,8 @@ class centre(QWidget):
         top.setWindowTitle("Select Locations")
         top.resize(900, 600)
         top.exec_()
-        
+
+        loc_changed = [0]
         if(loc_changed[-1] == 1):	#If changes made in location window
             if(ACTION[0] == " "):
                 self.fetched = 1
@@ -975,7 +994,9 @@ class centre(QWidget):
             log_file.writelines(line)
             log_file.close()
 
-        loc_changed.clear()
+        #loc_changed.clear()
+        #loc_changed = []
+        clear_list([loc_changed]);
         loc_changed.append(0)
         self.make_rev_list()
 
@@ -1135,8 +1156,9 @@ class centre(QWidget):
             left_map = left_del_flist
             right_map = right_del_flist
 
-        right_map.clear()
-        left_map.clear()
+        #right_map.clear()
+        #left_map.clear()
+        clear_list([right_map, left_map])
 
         #Keeping only file object for dock3
         i = 0
@@ -1231,7 +1253,8 @@ class centre(QWidget):
 
             i = 0
             while(i < len(tmp_list_name)):
-                  tmp_list_name[i].clear()		#Clear temporary lists to make delete list
+                  #tmp_list_name[i].clear()		#Clear temporary lists to make delete list
+                  clear_list([tmp_list_name[i]]);
                   i = i + 1
 
             #Store sizes in env_progress variables
@@ -1448,11 +1471,15 @@ class central(QMainWindow):
         central.start_handle2 = 0
         if(action == "del"):
             tree = central.del_tree
-            right_del_obj.clear()
+            #right_del_obj.clear()
+            #right_del_obj = []
+            clear_list([right_del_obj]);
             
         if(action == "copy"):
             tree = central.tree
-            right_cp_obj.clear()
+            #right_cp_obj.clear()
+            #right_cp_obj = []
+            clear_list([right_cp_obj]);
             
         obj_list = []
         maps = []

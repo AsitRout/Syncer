@@ -22,6 +22,13 @@ if(sys.platform == 'linux'):
     #Location Where Disks Are Stored
     disk_path = "/media/" + user_name + "/"
 
+if(sys.platform == 'linux2'):
+    #Home Directory
+    home = "/home/" + user_name + "/"
+
+    #Location Where Disks Are Stored
+    disk_path = "/media/"
+
 #Date
 date = time.strftime("%d-%m-%Y")
 

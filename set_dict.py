@@ -11,6 +11,9 @@ from env import *
 #Import Stylesheet
 from style2 import *
 
+#Import Wrapper Functions
+from wrapper import *
+
 class set_dict(QDialog):
     def __init__(self):
         super(set_dict, self).__init__()
@@ -360,11 +363,17 @@ class set_dict(QDialog):
         if(loc_changed[-1] == 0):
             return
         
-        all_list.clear()
-        list_name.clear()
-        left_check.clear()
-        top_check.clear()
-
+        #all_list.clear()
+        #list_name.clear()
+        #left_check.clear()
+        #top_check.clear()
+        clear_list([all_list, list_name, left_check, top_check])
+        """
+        all_list = []
+        list_name = []
+        left_check = []
+        top_check = []
+        """
         for item in self.tmp_left_check:
             left_check.append(item)
 
@@ -387,7 +396,9 @@ class set_dict(QDialog):
                 j = j + 1
             i = i + 1
         
-        sync_list.clear()
+        #sync_list.clear()
+        #sync_list = []
+        clear_list([sync_list]);
         
         for item in tmp_list:
             sync_list.append(item)

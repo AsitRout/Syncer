@@ -29,8 +29,11 @@ def make_fcategory(self, files, action):
     if(action == "del"):
         filetype = del_filetype	#Variable at Line 30 in env2
 
-    mime = magic.open(magic.MAGIC_MIME_TYPE)
-    mime.load()
+    #mime = magic.open(magic.MAGIC_MIME_TYPE)
+    #mime.load()
+
+    #mime = magic(flags=magic.MAGIC_MIME_TYPE)
+    #mime.id_filename('setup.py')
 
     total_size = 0
     ind = -1
@@ -38,14 +41,15 @@ def make_fcategory(self, files, action):
         paths = item.split('/')
         fname = paths[-1]	#File Name
         
-        detail = mime.file(item)
+        #detail = mime.id_filename(item)
+        detail = str(magic.from_file(item, mime=True))
         name = detail.split('/')
         
         size = os.path.getsize(item)	#File Size
         total_size = total_size + size
-        
+
         ind = ind + 1
-        if(name[1] == "x-empty"):
+        if(name[1][0:-1] == "x-empty"):
             tmp_emp = []
             tmp_emp.append(fname)
             tmp_emp.append(size)
@@ -54,34 +58,34 @@ def make_fcategory(self, files, action):
             filetype[5].append(tmp_emp)
             continue
         
-        if(name[0] == "audio"):
+        if(name[0][2:] == "audio"):
             tmp_audio = []
             tmp_audio.append(fname)
             tmp_audio.append(size)
-            tmp_audio.append(name[1])
+            tmp_audio.append(name[1][0:-1])
             tmp_audio.append(ind)
             filetype[0].append(tmp_audio)
             continue
             
-        if(name[0] == "image"):
+        if(name[0][2:] == "image"):
             tmp_img = []
             tmp_img.append(fname)
             tmp_img.append(size)
-            tmp_img.append(name[1])
+            tmp_img.append(name[1][0:-1])
             tmp_img.append(ind)
             filetype[1].append(tmp_img)
             continue
 
-        if(name[0] == "video"):
+        if(name[0][2:] == "video"):
             tmp_video = []
             tmp_video.append(fname)
             tmp_video.append(size)
-            tmp_video.append(name[1])
+            tmp_video.append(name[1][0:-1])
             tmp_video.append(ind)
             filetype[2].append(tmp_video)
             continue
 
-        if(name[1] == "pdf"):
+        if(name[1][0:-1] == "pdf"):
             tmp_pdf = []
             tmp_pdf.append(fname)
             tmp_pdf.append(size)
@@ -90,11 +94,11 @@ def make_fcategory(self, files, action):
             filetype[4].append(tmp_pdf)
             continue
             
-        if(name[0] == "text" or name[0] == "application"):
+        if(name[0][2:] == "text" or name[0][2:] == "application"):
             tmp_text = []
             tmp_text.append(fname)
             tmp_text.append(size)
-            tmp_text.append(str(name[1]))
+            tmp_text.append(str(name[1][0:-1]))
             tmp_text.append(ind)
             filetype[3].append(tmp_text)
             continue
